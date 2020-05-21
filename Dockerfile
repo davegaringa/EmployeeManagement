@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build-image
  
 WORKDIR /home/app
  
@@ -8,7 +8,7 @@ RUN for file in $(ls *.csproj); do mkdir -p ./${file%.*}/ && mv $file ./${file%.
  
 RUN dotnet restore
  
-COPY . ./EmployeeManagement
+COPY . .
  
 # RUN dotnet test ./Tests/Tests.csproj
  
@@ -20,6 +20,6 @@ WORKDIR /publish
  
 COPY --from=build-image /publish .
  
-# ENTRYPOINT ["dotnet", "MagisHRMS.dll"]
+# ENTRYPOINT ["dotnet", "EmployeeManagement.dll"]
 
 CMD ASPNETCORE_URLS=http://*:$PORT dotnet EmployeeManagement.dll
